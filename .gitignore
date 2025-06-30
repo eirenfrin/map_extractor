@@ -1,4 +1,4 @@
 venv/
+tiles/
 boundaries/*
 maps/*
-tiles/*
