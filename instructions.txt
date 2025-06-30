@@ -1,0 +1,16 @@
+Boundaries will hold txts 
+Each txt will contain boundaries coords collected manually from the map
+
+Maps will hold folders of images
+Each folder will contain screenshots representing tiles 
+
+Each folder will have one corresponding txt with the same numerical code in the title
+Each image will have absolute (pixel) coord and relative (to other images) coords in the title
+
+----------------------------------------
+* automate screenshots
+* boundaries collection mechanism
+* divide into classes
+* store coords x y of the boundaries
+* divide area into equal tiles
+* position screenshots according to tiles

@@ -1,0 +1,4 @@
+venv/
+boundaries/*
+maps/*
+tiles/*
