@@ -11,9 +11,10 @@ MAPS_OUTPUT_FOLDER = 'maps'
 
 BOUNDARIES_SCRIPT = """
     try{
-    window.boundaryPoints = [];
+    window.boundaryPoint = null;
     window.selectionMode = true;
-    map = document.getElementsByClassName('leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom')[0]
+    window.newPointToStore = false;
+    let map = document.getElementsByClassName('leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom')[0]
 
     let lastMousePos = null;
                         
@@ -27,11 +28,13 @@ BOUNDARIES_SCRIPT = """
 
     window.addEventListener('keydown', function(event) {
         if (event.key === 'b') {
-            window.boundaryPoints.push({ x: lastMousePos.x, y: lastMousePos.y });
+            window.boundaryPoint = { x: lastMousePos.x, y: lastMousePos.y };
+            window.newPointToStore = true
+            console.log(window.newPointToStore)
+            console.log(window.boundaryPoint)
         }
         if (event.key === 'Enter') {
             window.selectionMode = false;
-            alert("Selection finished.");
         }
     });
     }

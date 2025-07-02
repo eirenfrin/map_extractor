@@ -1,3 +1,6 @@
+import consts as c
+from boundaries_capturer import BoundariesCapturer as BC
+
 import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -6,48 +9,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from driver_manager import DriverManager
 
-newdriver = DriverManager()
-newdriver.launchCromeWithSelenium(no_overlays=False)
-
-script = """
-
-try{
-window.boundaryPoints = [];
-window.selectionMode = true;
-map = document.getElementsByClassName('leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom')[0]
-
-let lastMousePos = null;
-                      
-map.addEventListener('mousemove', function (e) {
-    const rect = map.getBoundingClientRect();
-    lastMousePos = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-    };
-});
-
-window.addEventListener('keydown', function(event) {
-    if (event.key === 'b') {
-        window.boundaryPoints.push({ x: lastMousePos.x, y: lastMousePos.y });
-        console.log(boundaryPoints)
-    }
-    if (event.key === 'Enter') {
-        window.selectionMode = false;
-        alert("Selection finished.");
-    }
-});
-
-}
-catch (e) { }
-
-            
-"""
-
-
-boundaries = newdriver.injectScript(script, 'boundaryPoints')
-print(boundaries)
-newdriver.closeDriver()
-
+newboundaries = BC()
+newboundaries.getPoints()
 
 # making screenshots
 # hide all the overlays

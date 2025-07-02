@@ -7,6 +7,10 @@ Each folder will contain screenshots representing tiles
 Each folder will have one corresponding txt with the same numerical code in the title
 Each image will have absolute (pixel) coord and relative (to other images) coords in the title
 
+boundaries capturer gets x y coords of the cursor, stores them in a file
+tiles creator computes the exact screenshots locations
+
+
 ----------------------------------------
 * automate screenshots
 * boundaries collection mechanism
@@ -14,3 +18,7 @@ Each image will have absolute (pixel) coord and relative (to other images) coord
 * store coords x y of the boundaries
 * divide area into equal tiles
 * position screenshots according to tiles
+
+asynch await alert notification?
+convert cursor position to middle coords of the screenshot
+find equation to connect pixel position to coords at given zoom level

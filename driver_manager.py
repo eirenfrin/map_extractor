@@ -7,7 +7,7 @@ class DriverManager:
     def __init__(self):
         self.driver = None
 
-    def launchCromeWithSelenium(self, x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=True):
+    def launchChromeWithSelenium(self, x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=True):
         options = Options()
         options.headless = True
         self.driver = webdriver.Chrome(options=options)
@@ -18,16 +18,19 @@ class DriverManager:
         if(no_overlays):
             self.hideElements(c.OVERLAY_ELEMENTS_CLASSES)
     
-    def injectScript(self, script, *vars_to_return):
+    def injectScript(self, script, wait=False):
         self.driver.execute_script(script)
 
-        input("Press Enter to exit and close the browser...")
+        if wait:
+            input("Press Enter to exit and close the browser...")
+    
+    def pollForVariables(self, var, *moreVars):
+        data = [self.driver.execute_script(f"return window.{var}")]
 
-        data = []
-        for var in vars_to_return:
+        for var in moreVars:
             data.append(self.driver.execute_script(f"return window.{var}"))
-        
-        return data
+
+        return data if moreVars else data[0]
     
     def hideElements(self, classesString):
         self.driver.execute_script(f"""
