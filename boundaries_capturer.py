@@ -1,10 +1,13 @@
 from driver_manager import DriverManager as DM
 from consts import BOUNDARIES_SCRIPT
+import consts as c
+
+import re
 
 class BoundariesCapturer:
     def __init__(self):
-        self.map_coords = []
-        self.cursor_coords = []
+        self.map_coords = [] # absolute coords from URL
+        self.cursor_coords = [] # relative cursor coords
 
     def getPoints(self):
         new_driver = DM()
@@ -18,6 +21,11 @@ class BoundariesCapturer:
         new_driver.closeDriver()
         print(self.map_coords)
         print(self.cursor_coords)
-    
-    def formatPoints(self):
-        pass
+
+    def getLonLatFromURL(self):
+        for i, coord in enumerate(self.map_coords):
+            _, lat, long = re.findall(c.XYZ_URL_REGEX, coord)
+            self.map_coords[i] = (lat, long)
+
+
+

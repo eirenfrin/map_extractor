@@ -1,8 +1,10 @@
 ZOOM = 16
-X_START = 48
-Y_START = 17
+X_START = 17 # longitude
+Y_START = 48 # latitude
+TILE_SIZE = 256
+XYZ_URL_REGEX = r'\d+(?:\.\d+)?'
 
-URL = 'https://www.freemap.sk/#map={zoom}/{x}/{y}&layers=X'
+URL = 'https://www.freemap.sk/#map={zoom}/{y}/{x}&layers=X'
 MAP_CONTAINER_CLASSES = 'leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom'
 OVERLAY_ELEMENTS_CLASSES = 'header, .fm-type-zoom-control, div.fm-toolbar, div.leaflet-control-scale-line, div.fade'
 
@@ -28,7 +30,7 @@ BOUNDARIES_SCRIPT = """
 
     window.addEventListener('keydown', function(event) {
         if (event.key === 'b') {
-            window.boundaryPoint = { x: lastMousePos.x, y: lastMousePos.y };
+            window.boundaryPoint = lastMousePos.x + '_' + lastMousePos.y;
             window.newPointToStore = true
             console.log(window.newPointToStore)
             console.log(window.boundaryPoint)
