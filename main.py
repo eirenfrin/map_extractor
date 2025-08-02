@@ -2,6 +2,7 @@ import consts as c
 from boundaries_capturer import BoundariesCapturer as BC
 from driver_manager import DriverManager as DM
 from tiles_creator import TilesCreator as TC
+from screenshot_maker import ScreenshotMaker as SM
 
 import os
 from selenium import webdriver
@@ -9,21 +10,25 @@ from selenium.webdriver.chrome.options import Options
 import time
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from decimal import Decimal
+
+# newboundaries = BC()
+# newboundaries.getPoints()
+# newboundaries.getLatLongFromURL()
+# print(newboundaries.map_coords)
+# tilesCreator = TC(newboundaries.map_coords)
+long = Decimal(str(17.000000))
+lat = Decimal(str(48.000000))
+shifts = [[(long, lat), 3]]
+snap = SM(shifts)
+snap.setEnv()
+snap.shiftVertically()
 
 
-
-newboundaries = BC()
-newboundaries.getPoints()
-newboundaries.getLonLatFromURL()
-print(newboundaries.map_coords)
-tilesCreator = TC(newboundaries.map_coords)
-for i, coord in enumerate(tilesCreator.map_coords):
-    if i%2 == 1:
-        continue
-    if i == len(tilesCreator.map_coords)-1:
-        break
-    print(tilesCreator.getPixelDistanceFromLatLongCoords(coord, tilesCreator.map_coords[i+1]))
-
+# for i, coord in enumerate(tilesCreator.map_coords):
+#     pixels = tilesCreator.latLongToPixel(tilesCreator.map_coords[i][0], tilesCreator.map_coords[i][1])
+#     print(f'pixels: {pixels}')
+#     print(tilesCreator.pixelToLatLong(pixels[0], pixels[1]))
 
 # new_driver = DM()
 # new_driver.launchChromeWithSelenium(no_overlays=False)
@@ -47,11 +52,12 @@ for i, coord in enumerate(tilesCreator.map_coords):
 #     document.querySelectorAll('header, .fm-type-zoom-control, div.fm-toolbar, div.leaflet-control-scale-line, div.fade').forEach(e => e.style.display = 'none');
 # """)
 
-# map_element = driver.find_element(By.CLASS_NAME, 'leaflet-container, leaflet-touch, leaflet-retina, leaflet-fade-anim, leaflet-grab, leaflet-touch-drag, leaflet-touch-zoom')
+# map_element = driver.find_element(By.CLASS_NAME, c.MAP_CONTAINER_CLASSES)
 # dims = map_element.rect
 # center_x = dims['width'] // 2
 # center_y = dims['height'] // 2
-# print(dims, center_x, center_y)
+# remainder = dims['width'] % 2
+# print(dims, center_x, center_y, remainder)
 
 # urls = []
 

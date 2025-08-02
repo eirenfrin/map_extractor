@@ -3,13 +3,16 @@ X_START = 17 # longitude
 Y_START = 48 # latitude
 TILE_SIZE = 256
 XYZ_URL_REGEX = r'\d+(?:\.\d+)?'
+WINDOW_WIDTH = 1200
+WINDOW_HEIGHT = 800
 
 URL = 'https://www.freemap.sk/#map={zoom}/{y}/{x}&layers=X'
-MAP_CONTAINER_CLASSES = 'leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom'
+MAP_CONTAINER_CLASSES = 'leaflet-container, leaflet-touch, leaflet-retina, leaflet-fade-anim, leaflet-grab, leaflet-touch-drag, leaflet-touch-zoom'
 OVERLAY_ELEMENTS_CLASSES = 'header, .fm-type-zoom-control, div.fm-toolbar, div.leaflet-control-scale-line, div.fade'
 
 BOUNDARIES_OUTPUT_FOLDER = 'boundaries'
 MAPS_OUTPUT_FOLDER = 'maps'
+TILES_OUTPUT_FOLDER = 'tiles'
 
 BOUNDARIES_SCRIPT = """
     try{

@@ -1,6 +1,6 @@
 import consts as c
 
-from decimal import Decimal, getcontext
+from decimal import Decimal, getcontext, ROUND_HALF_UP
 import math
 
 class TilesCreator:
@@ -36,6 +36,17 @@ class TilesCreator:
 
         return (long_x, lat_y)
     
+    def pixelToLatLong(self, x, y):
+        scale = Decimal(c.TILE_SIZE) * Decimal(2)**Decimal(c.ZOOM)
+
+        long = (Decimal(x) / scale) * Decimal(360) - Decimal(180)
+
+        n = Decimal(math.pi) - (Decimal(2) * Decimal(math.pi) * Decimal(y) / scale)
+        lat_rad = math.atan(math.sinh(float(n)))  # Decimal not supported for math
+        lat = Decimal(str(math.degrees(lat_rad)))
+
+        return (self.roundDecimal(long), self.roundDecimal(lat))
+    
     def getPixelDistanceFromLatLongCoords(self, lat_long_1, lat_long_2):
         long_x_1, lat_y_1 = self.latLongToPixel(lat_long_1[0], lat_long_1[1])
         long_x_2, lat_y_2 = self.latLongToPixel(lat_long_2[0], lat_long_2[1])
@@ -44,3 +55,7 @@ class TilesCreator:
         height = lat_y_2 - lat_y_1
 
         return {'width': width, 'height': height}
+
+    def roundDecimal(self, num, places=6):
+        precision = Decimal("1").scaleb(-int(places))
+        return num.quantize(precision, rounding=ROUND_HALF_UP)

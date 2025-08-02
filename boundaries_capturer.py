@@ -11,7 +11,7 @@ class BoundariesCapturer:
 
     def getPoints(self):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(no_overlays=False)
+        new_driver.launchChromeWithSelenium(no_overlays=True)
         new_driver.injectScript(BOUNDARIES_SCRIPT)
         while new_driver.pollForVariables('selectionMode'):
             if new_driver.pollForVariables('newPointToStore'):
@@ -22,7 +22,7 @@ class BoundariesCapturer:
         print(self.map_coords)
         print(self.cursor_coords)
 
-    def getLonLatFromURL(self):
+    def getLatLongFromURL(self):
         for i, coord in enumerate(self.map_coords):
             _, lat, long = re.findall(c.XYZ_URL_REGEX, coord)
             self.map_coords[i] = (lat, long)
