@@ -7,6 +7,7 @@ WINDOW_HEIGHT = 800
 MAP_WIDTH = 1187
 MAP_HEIGHT = 655
 ZOOM = 16
+MAP_TITLE = ''
 
 """
 Regular constants
@@ -24,7 +25,6 @@ OVERLAY_ELEMENTS_CLASSES = 'header, .fm-type-zoom-control, div.fm-toolbar, div.l
 
 BOUNDARIES_OUTPUT_FOLDER = 'boundaries'
 MAPS_OUTPUT_FOLDER = 'maps'
-TILES_OUTPUT_FOLDER = 'tiles'
 
 BOUNDARIES_SCRIPT = """
     try{

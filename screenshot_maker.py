@@ -41,7 +41,7 @@ class ScreenshotMaker:
         new_driver.closeDriver()
 
     def makeScreenshot(self, driver):
-        full_path = os.path.join(c.TILES_OUTPUT_FOLDER, f'capture_{self.band_number}_{self.tile_number}.png')
+        full_path = os.path.join(c.MAPS_OUTPUT_FOLDER, c.MAP_TITLE, f'capture_{self.band_number}_{self.tile_number}.png')
         driver.driver.save_screenshot(full_path)
 
     def shiftRight(self, driver, map_element, step):
