@@ -3,6 +3,7 @@ from boundaries_capturer import BoundariesCapturer as BC
 from driver_manager import DriverManager as DM
 from tiles_creator import TilesCreator as TC
 from screenshot_maker import ScreenshotMaker as SM
+from settings import Settings as S
 
 import os
 from selenium import webdriver
@@ -17,12 +18,26 @@ from decimal import Decimal
 # newboundaries.getLatLongFromURL()
 # print(newboundaries.map_coords)
 # tilesCreator = TC(newboundaries.map_coords)
-long = Decimal(str(17.000000))
-lat = Decimal(str(48.000000))
-shifts = [[(long, lat), 3]]
-snap = SM(shifts)
-snap.setEnv()
-snap.shiftVertically()
+# tilesCreator.getContainerRectangle()
+# tilesCreator.computeBandsShiftsNumber()
+# screenshotMaker = SM(tilesCreator.area)
+# screenshotMaker.setEnv()
+# screenshotMaker.moveAcrossBands()
+
+settings = S('nice map', 500, 1200, 16)
+settings.setWindowSizeZoom()
+settings.setMapSize()
+settings.setStorageFolders()
+newboundaries = BC()
+newboundaries.getPoints()
+print(newboundaries.map_coords)
+
+# long = Decimal(str(17.000000))
+# lat = Decimal(str(48.000000))
+# shifts = [[(long, lat), 3]]
+# snap = SM(shifts)
+# snap.setEnv()
+# snap.moveAcrossBands()
 
 
 # for i, coord in enumerate(tilesCreator.map_coords):

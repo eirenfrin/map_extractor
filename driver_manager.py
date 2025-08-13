@@ -2,17 +2,19 @@ import consts as c
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 
 class DriverManager:
     def __init__(self):
         self.driver = None
 
-    def launchChromeWithSelenium(self, x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=True):
+    def launchChromeWithSelenium(self, x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=True, show_window=True):
         options = Options()
-        options.headless = True
+        if not show_window:
+            options.add_argument("--headless=new")
         self.driver = webdriver.Chrome(options=options)
 
-        self.driver.set_window_size(1200, 800)  #viewport size
+        self.driver.set_window_size(c.WINDOW_WIDTH, c.WINDOW_HEIGHT)  #viewport size
         self.driver.get(c.URL.format(zoom=zoom, x=x_start, y=y_start))
 
         if(no_overlays):
@@ -39,6 +41,9 @@ class DriverManager:
 
     def getDriver(self):
         return self.driver
+    
+    def getMapElement(self):
+        return self.driver.find_element(By.CLASS_NAME, c.MAP_CONTAINER_CLASSES)
     
     def closeDriver(self):
         self.driver.quit()

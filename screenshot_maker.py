@@ -7,37 +7,35 @@ import time
 import os
 
 class ScreenshotMaker:
-    def __init__(self, bands):
-        self.bands = bands # array of arrays as [(), number]
+    def __init__(self, area):
+        self.area = area # array of arrays as [(), number]
         self.band_number = 0
         self.tile_number = 0
 
-    def setEnv(self):
-        os.makedirs(c.TILES_OUTPUT_FOLDER, exist_ok=True)
-
-    def shiftVertically(self):
-        for band_number, band in enumerate(self.bands):
+    def moveAcrossBands(self):
+        for band_number, band in enumerate(self.area):
             self.band_number = band_number
 
-            (long, lat), num_shifts = band
+            (lat, long), num_shifts = band
             print(num_shifts)
             self.shiftHorizontally(long, lat, num_shifts)
         
     def shiftHorizontally(self, long, lat, num_shifts):
         new_driver = DM()
         new_driver.launchChromeWithSelenium(x_start=long, y_start=lat, no_overlays=True)
-        map_element = new_driver.driver.find_element(By.CLASS_NAME, c.MAP_CONTAINER_CLASSES)
-        dims = map_element.rect
-        center_x = dims['width'] // 2
-        remainder = dims['width'] % 2
+        map_element = new_driver.getMapElement()
+        center_x = c.MAP_WIDTH // 2
+        remainder = c.MAP_WIDTH % 2
 
         for shift in range(num_shifts+1):
+            time.sleep(1)
             self.tile_number = shift
             self.makeScreenshot(new_driver)
 
             self.shiftRight(new_driver.getDriver(), map_element, center_x)
             self.shiftRight(new_driver.getDriver(), map_element, center_x)
             if remainder:
+                print('remainder ', remainder)
                 self.shiftRight(new_driver.getDriver(), map_element, remainder)
         
         new_driver.closeDriver()

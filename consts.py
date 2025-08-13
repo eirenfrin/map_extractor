@@ -1,10 +1,22 @@
+"""
+Constants to be set by user
+"""
+
+WINDOW_WIDTH = 1200
+WINDOW_HEIGHT = 800
+MAP_WIDTH = 1187
+MAP_HEIGHT = 655
 ZOOM = 16
+
+"""
+Regular constants
+"""
+
 X_START = 17 # longitude
 Y_START = 48 # latitude
 TILE_SIZE = 256
 XYZ_URL_REGEX = r'\d+(?:\.\d+)?'
-WINDOW_WIDTH = 1200
-WINDOW_HEIGHT = 800
+
 
 URL = 'https://www.freemap.sk/#map={zoom}/{y}/{x}&layers=X'
 MAP_CONTAINER_CLASSES = 'leaflet-container, leaflet-touch, leaflet-retina, leaflet-fade-anim, leaflet-grab, leaflet-touch-drag, leaflet-touch-zoom'
@@ -35,8 +47,6 @@ BOUNDARIES_SCRIPT = """
         if (event.key === 'b') {
             window.boundaryPoint = lastMousePos.x + '_' + lastMousePos.y;
             window.newPointToStore = true
-            console.log(window.newPointToStore)
-            console.log(window.boundaryPoint)
         }
         if (event.key === 'Enter') {
             window.selectionMode = false;
