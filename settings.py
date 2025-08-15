@@ -2,7 +2,9 @@ import consts as c
 from driver_manager import DriverManager as DM
 
 import os
+import json
 from datetime import datetime
+from decimal import Decimal
 
 class Settings:
     def __init__(self, map_title='', window_width=1200, window_height=800, zoom=16):
@@ -18,12 +20,19 @@ class Settings:
 
     def setMapSize(self):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(no_overlays=False, show_window=False)
+        new_driver.launchChromeWithSelenium(no_overlays=False)
         map_element = new_driver.getMapElement()
         dims = map_element.rect
+        # size = new_driver.driver.execute_script("""
+        #     let map = document.getElementsByClassName('leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom')[0]
+        #     let rect = map.getBoundingClientRect();
+        #     return {width: rect.width, height: rect.height};
+        # """)
 
-        c.MAP_WIDTH = dims['width']
+        # c.MAP_WIDTH = Decimal(str(size['width']))
+        # c.MAP_HEIGHT = Decimal(str(size['height']))
         c.MAP_HEIGHT = dims['height']
+        c.MAP_WIDTH = dims['width']
 
         new_driver.closeDriver()
 
@@ -40,5 +49,7 @@ class Settings:
         tiles_storage_path = os.path.join(c.MAPS_OUTPUT_FOLDER, self.map_title)
         os.makedirs(tiles_storage_path, exist_ok=True)
 
-        open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, self.map_title), "w").close()
+        # open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, self.map_title), "w").close()
+        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json"), "w") as boundaries_storage:
+            json.dump([], boundaries_storage)
 

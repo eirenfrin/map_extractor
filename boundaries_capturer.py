@@ -3,6 +3,8 @@ from consts import BOUNDARIES_SCRIPT
 import consts as c
 
 import re
+import os
+import json
 from decimal import Decimal
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -44,7 +46,13 @@ class BoundariesCapturer:
 
     def getZoomLatLongFromURL(self, url):
         zoom, lat, long = re.findall(c.XYZ_URL_REGEX, url)
-        return (int(zoom), (Decimal(lat), Decimal(long)))
+        return (int(zoom), (lat, long))
+    
+    def storePoints(self):
+        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{c.MAP_TITLE}.json"), "w") as boundaries_storage:
+            json.dump([list(coord) for coord in self.map_coords], boundaries_storage)
+
+
 
 
 

@@ -2,11 +2,23 @@ import consts as c
 
 from decimal import Decimal, getcontext, ROUND_HALF_UP, ROUND_UP
 import math
+import os
+import json
 
 class TilesCreator:
     def __init__(self, map_coords):
-        self.map_coords = map_coords # list of (lat, long) tuples
+        self.map_coords = map_coords # list of (lat, long) tuples str type
         self.area = []
+
+    def convertToDecimal(self):
+        self.map_coords = [(Decimal(lat), Decimal(long)) for lat, long in self.map_coords]
+        print(self.map_coords)
+
+    def readMapCoords(self, map_title=None):
+        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{map_title if map_title else c.MAP_TITLE}.json"), "r") as boundaries_storage:
+            map_coords_as_lists = json.load(boundaries_storage)
+            self.map_coords = [tuple(coords) for coords in map_coords_as_lists]
+            print(self.map_coords)
 
     def getMinMaxLongitudeCoord(self):
         _, long = zip(*self.map_coords)
@@ -38,11 +50,12 @@ class TilesCreator:
         return (lat_y, long_x)
     
     def pixelToLatLong(self, y, x):
+        getcontext().prec = 10
         scale = Decimal(c.TILE_SIZE) * Decimal(2)**Decimal(c.ZOOM)
 
-        long = (Decimal(x) / scale) * Decimal(360) - Decimal(180)
+        long = (Decimal(str(x)) / scale) * Decimal(360) - Decimal(180)
 
-        n = Decimal(math.pi) - (Decimal(2) * Decimal(math.pi) * Decimal(y) / scale)
+        n = Decimal(math.pi) - (Decimal(2) * Decimal(math.pi) * Decimal(str(y)) / scale)
         lat_rad = math.atan(math.sinh(float(n)))  # Decimal not supported for math
         lat = Decimal(str(math.degrees(lat_rad)))
 
@@ -84,14 +97,19 @@ class TilesCreator:
         print('number_shifts ', number_shifts)
 
         top_left_pixel = self.latLongToPixel(top_left_corner[0], top_left_corner[1])
-        print(top_left_pixel)
+        print("type: ", type(top_left_pixel[0]))
+        print(type(top_left_pixel[1]))
+
         print(self.pixelToLatLong(top_left_pixel[0], top_left_pixel[1]))
 
         for band in range(number_bands):
             starting_coords = (top_left_pixel[0] + c.MAP_HEIGHT*band, top_left_pixel[1])
             print('left corner ', top_left_corner)
             print('starting coords ', starting_coords)
+            # lat_y_rounded = self.roundDecimal(starting_coords[0], places=0)
+            # long_x_rounded = self.roundDecimal(starting_coords[1], places=0)
             lat_long = self.pixelToLatLong(starting_coords[0], starting_coords[1])
+            # lat_long = self.pixelToLatLong(lat_y_rounded, long_x_rounded)
             self.area.append([lat_long, number_shifts])
 
         print(self.area)
