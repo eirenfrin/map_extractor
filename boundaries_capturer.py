@@ -13,7 +13,7 @@ from selenium.common.exceptions import TimeoutException
 class BoundariesCapturer:
     def __init__(self):
         self.urls = [] # strings
-        self.map_coords = [] # absolute coords from URL, tuples with Decimal types
+        self.map_coords = [] # absolute coords from URL, tuples with str types
         self.cursor_coords = [] # relative cursor coords
 
     def getPoints(self):

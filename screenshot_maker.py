@@ -5,6 +5,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 import time
 import os
+from PIL import Image
+import io
 
 class ScreenshotMaker:
     def __init__(self, area):
@@ -30,7 +32,7 @@ class ScreenshotMaker:
         for shift in range(num_shifts+1):
             time.sleep(1)
             self.tile_number = shift
-            self.makeScreenshot(new_driver)
+            self.makeScreenshot(new_driver, shift)
 
             self.shiftRight(new_driver.getDriver(), map_element, center_x)
             self.shiftRight(new_driver.getDriver(), map_element, center_x)
@@ -40,9 +42,15 @@ class ScreenshotMaker:
         
         new_driver.closeDriver()
 
-    def makeScreenshot(self, driver):
+    def makeScreenshot(self, driver, crop):
         full_path = os.path.join(c.MAPS_OUTPUT_FOLDER, c.MAP_TITLE, f'capture_{self.band_number}_{self.tile_number}.png')
-        driver.driver.save_screenshot(full_path)
+        capture = driver.driver.get_screenshot_as_png()
+        img = Image.open(io.BytesIO(capture))
+
+        if crop:
+            img = img.crop((2, 0, img.width, img.height))
+
+        img.save(full_path)
 
     def shiftRight(self, driver, map_element, step):
         ActionChains(driver).move_to_element_with_offset(map_element, 0, 0)\
@@ -50,3 +58,4 @@ class ScreenshotMaker:
         .move_by_offset(-step, 0)\
         .pause(0.5).release().perform()
         time.sleep(1)
+

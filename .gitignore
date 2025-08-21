@@ -2,3 +2,4 @@ venv/
 tiles/
 boundaries/*
 maps/*
+__pycache__/

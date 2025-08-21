@@ -14,16 +14,18 @@ from selenium.webdriver.common.by import By
 from decimal import Decimal
 
 
-settings = S('with rounding', 1200, 800, 16)
+settings = S('cropped', 1200, 800, 16)
 settings.setWindowSizeZoom()
 settings.setMapSize()
 settings.setStorageFolders()
 
-# newboundaries = BC()
-# newboundaries.getPoints()
-# newboundaries.storePoints()
-tilesCreator = TC([])
-tilesCreator.readMapCoords('no_rounding')
+newboundaries = BC()
+newboundaries.getPoints()
+
+newboundaries.storePoints()
+# tilesCreator = TC([])
+tilesCreator = TC(newboundaries.map_coords)
+# tilesCreator.readMapCoords('last_test')
 tilesCreator.convertToDecimal()
 tilesCreator.getContainerRectangle()
 tilesCreator.computeBandsShiftsNumber()
