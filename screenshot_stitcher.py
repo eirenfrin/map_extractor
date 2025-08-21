@@ -18,7 +18,7 @@ class ScreenshotStitcher:
 
         vertical_offshift = 0
         horizontal_offshift = 0
-        for capture_index, capture_filename in enumerate(self.filenames):
+        for capture_index, capture_filename in enumerate(self.filenames_sorted):
             print(capture_filename)
 
             capture = Image.open(os.path.join(self.path, capture_filename))
@@ -46,10 +46,14 @@ class ScreenshotStitcher:
             'height': 0
         }
         self.path = os.path.join(c.MAPS_OUTPUT_FOLDER, self.map_folder)
-        self.filenames = [capture for capture in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, capture))]
-        map_params['bands'], map_params['shifts'] = tuple(map(int, re.match(c.SCREENSHOT_TITLE_REGEX, self.filenames[-1]).groups()))
+        filenames = [capture for capture in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, capture))]
 
-        for i, f in enumerate(self.filenames[:2]):
+        pattern = re.compile(r"capture_(\d+)_(\d+)\.\w+")
+        self.filenames_sorted = sorted(filenames, key=lambda f: tuple(map(int, pattern.match(f).groups())))
+
+        map_params['bands'], map_params['shifts'] = tuple(map(int, re.match(c.SCREENSHOT_TITLE_REGEX, self.filenames_sorted[-1]).groups()))
+
+        for i, f in enumerate(self.filenames_sorted[:2]):
             img = Image.open(os.path.join(self.path, f))
             if i == 0:
                 map_params['width_first'] = img.width
