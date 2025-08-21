@@ -25,6 +25,7 @@ OVERLAY_ELEMENTS_CLASSES = 'header, .fm-type-zoom-control, div.fm-toolbar, div.l
 
 BOUNDARIES_OUTPUT_FOLDER = 'boundaries'
 MAPS_OUTPUT_FOLDER = 'maps'
+SCREENSHOT_TITLE_REGEX = r'\w+_(\d+)_(\d+)'
 
 BOUNDARIES_SCRIPT = """
     try{

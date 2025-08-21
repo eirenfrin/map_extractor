@@ -4,6 +4,7 @@ from driver_manager import DriverManager as DM
 from tiles_creator import TilesCreator as TC
 from screenshot_maker import ScreenshotMaker as SM
 from settings import Settings as S
+from screenshot_stitcher import ScreenshotStitcher as SS
 
 import os
 from selenium import webdriver
@@ -14,11 +15,11 @@ from selenium.webdriver.common.by import By
 from decimal import Decimal
 
 
-settings = S('cropped', 1200, 800, 16)
+settings = S('map', 1200, 800, 15)
 settings.setWindowSizeZoom()
 settings.setMapSize()
 settings.setStorageFolders()
-
+print(c.ZOOM)
 newboundaries = BC()
 newboundaries.getPoints()
 
@@ -32,3 +33,6 @@ tilesCreator.computeBandsShiftsNumber()
 screenshotMaker = SM(tilesCreator.area)
 screenshotMaker.moveAcrossBands()
 
+# ss = SS('map')
+# print(ss.getMapSize())
+# ss.stitchScreenshots()

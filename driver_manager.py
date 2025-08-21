@@ -8,7 +8,8 @@ class DriverManager:
     def __init__(self):
         self.driver = None
 
-    def launchChromeWithSelenium(self, x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=True, show_window=True):
+    def launchChromeWithSelenium(self, x_start, y_start, zoom, no_overlays=True, show_window=True):
+        print(zoom)
         options = Options()
         if not show_window:
             options.add_argument("--headless=new")

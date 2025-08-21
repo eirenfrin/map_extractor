@@ -20,7 +20,7 @@ class Settings:
 
     def setMapSize(self):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(no_overlays=False)
+        new_driver.launchChromeWithSelenium(x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=False)
         map_element = new_driver.getMapElement()
         dims = map_element.rect
         # size = new_driver.driver.execute_script("""

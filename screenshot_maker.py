@@ -24,13 +24,13 @@ class ScreenshotMaker:
         
     def shiftHorizontally(self, long, lat, num_shifts):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(x_start=long, y_start=lat, no_overlays=True)
+        new_driver.launchChromeWithSelenium(x_start=long, y_start=lat, zoom=c.ZOOM, no_overlays=True)
         map_element = new_driver.getMapElement()
         center_x = c.MAP_WIDTH // 2
         remainder = c.MAP_WIDTH % 2
 
         for shift in range(num_shifts+1):
-            time.sleep(1)
+            time.sleep(3)
             self.tile_number = shift
             self.makeScreenshot(new_driver, shift)
 

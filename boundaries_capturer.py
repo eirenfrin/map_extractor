@@ -18,7 +18,7 @@ class BoundariesCapturer:
 
     def getPoints(self):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(no_overlays=True)
+        new_driver.launchChromeWithSelenium(x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=True)
         new_driver.injectScript(BOUNDARIES_SCRIPT)
 
         while new_driver.pollForVariables('selectionMode'):
