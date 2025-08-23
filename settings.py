@@ -14,25 +14,18 @@ class Settings:
         self.zoom = zoom
 
     def setWindowSizeZoom(self):
-        c.WINDOW_HEIGHT = self.window_height
-        c.WINDOW_WIDTH = self.window_width
-        c.ZOOM = self.zoom
+        c.window_height = self.window_height
+        c.window_width = self.window_width
+        c.zoom = self.zoom
 
     def setMapSize(self):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=False)
+        new_driver.launchChromeWithSelenium(no_overlays=False)
         map_element = new_driver.getMapElement()
         dims = map_element.rect
-        # size = new_driver.driver.execute_script("""
-        #     let map = document.getElementsByClassName('leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom')[0]
-        #     let rect = map.getBoundingClientRect();
-        #     return {width: rect.width, height: rect.height};
-        # """)
-
-        # c.MAP_WIDTH = Decimal(str(size['width']))
-        # c.MAP_HEIGHT = Decimal(str(size['height']))
-        c.MAP_HEIGHT = dims['height']
-        c.MAP_WIDTH = dims['width']
+        
+        c.map_height = dims['height']
+        c.map_width = dims['width']
 
         new_driver.closeDriver()
 
@@ -44,7 +37,7 @@ class Settings:
             current_time = datetime.now()
             self.map_title = current_time.strftime("%d_%m_%Y__%H_%M")
 
-        c.MAP_TITLE = self.map_title
+        c.map_title = self.map_title
 
         tiles_storage_path = os.path.join(c.MAPS_OUTPUT_FOLDER, self.map_title)
         os.makedirs(tiles_storage_path, exist_ok=True)

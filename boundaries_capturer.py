@@ -18,7 +18,7 @@ class BoundariesCapturer:
 
     def getPoints(self):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(x_start=c.X_START, y_start=c.Y_START, zoom=c.ZOOM, no_overlays=True)
+        new_driver.launchChromeWithSelenium()
         new_driver.injectScript(BOUNDARIES_SCRIPT)
 
         while new_driver.pollForVariables('selectionMode'):
@@ -26,8 +26,8 @@ class BoundariesCapturer:
                 current_url = new_driver.driver.current_url
                 zoom, (lat, long) = self.getZoomLatLongFromURL(current_url)
 
-                if zoom != c.ZOOM:
-                    new_driver.injectScript(f"alert('Point was NOT stored. Adjust zoom to {c.ZOOM} and try again.');")
+                if zoom != c.zoom:
+                    new_driver.injectScript(f"alert('Point was NOT stored. Adjust zoom to {c.zoom} and try again.');")
                     try:
                         WebDriverWait(new_driver.driver, 300).until_not(EC.alert_is_present())
                     except TimeoutException:
@@ -49,7 +49,7 @@ class BoundariesCapturer:
         return (int(zoom), (lat, long))
     
     def storePoints(self):
-        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{c.MAP_TITLE}.json"), "w") as boundaries_storage:
+        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{c.map_title}.json"), "w") as boundaries_storage:
             json.dump([list(coord) for coord in self.map_coords], boundaries_storage)
 
 

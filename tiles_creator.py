@@ -15,7 +15,7 @@ class TilesCreator:
         print(self.map_coords)
 
     def readMapCoords(self, map_title=None):
-        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{map_title if map_title else c.MAP_TITLE}.json"), "r") as boundaries_storage:
+        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{map_title if map_title else c.map_title}.json"), "r") as boundaries_storage:
             map_coords_as_lists = json.load(boundaries_storage)
             self.map_coords = [tuple(coords) for coords in map_coords_as_lists]
             print(self.map_coords)
@@ -40,7 +40,7 @@ class TilesCreator:
         lat = Decimal(str(lat))
         long = Decimal(str(long))
 
-        scale = Decimal(c.TILE_SIZE) * Decimal(2)**Decimal(c.ZOOM)
+        scale = Decimal(c.TILE_SIZE) * Decimal(2)**Decimal(c.zoom)
 
         long_x = (long + Decimal(180)) / Decimal(360) * scale
 
@@ -51,7 +51,7 @@ class TilesCreator:
     
     def pixelToLatLong(self, y, x):
         getcontext().prec = 10
-        scale = Decimal(c.TILE_SIZE) * Decimal(2)**Decimal(c.ZOOM)
+        scale = Decimal(c.TILE_SIZE) * Decimal(2)**Decimal(c.zoom)
 
         long = (Decimal(str(x)) / scale) * Decimal(360) - Decimal(180)
 
@@ -85,14 +85,14 @@ class TilesCreator:
         print('bottom left ', self.bottom_left_corner)
         top_left_corner = (self.top_right_corner[0], self.bottom_left_corner[1]) # lat long
         print('top left ', top_left_corner)
-        rectangle_width = self.getPixelDistanceFromLatLongCoords(top_left_corner, self.top_right_corner)['width'] + c.MAP_WIDTH #decimal type
+        rectangle_width = self.getPixelDistanceFromLatLongCoords(top_left_corner, self.top_right_corner)['width'] + c.map_width #decimal type
 
-        rectangle_height = self.getPixelDistanceFromLatLongCoords(top_left_corner, self.bottom_left_corner)['height'] + c.MAP_HEIGHT # decimal type
+        rectangle_height = self.getPixelDistanceFromLatLongCoords(top_left_corner, self.bottom_left_corner)['height'] + c.map_height # decimal type
         print('height ', rectangle_height)
         print('width ', rectangle_width)
 
-        number_bands = int(self.roundDecimal(rectangle_height / c.MAP_HEIGHT, ROUND_UP, 0))
-        number_shifts = int(self.roundDecimal(rectangle_width / c.MAP_WIDTH, ROUND_UP, 0))
+        number_bands = int(self.roundDecimal(rectangle_height / c.map_height, ROUND_UP, 0))
+        number_shifts = int(self.roundDecimal(rectangle_width / c.map_width, ROUND_UP, 0))
         print('number bands ', number_bands)
         print('number_shifts ', number_shifts)
 
@@ -103,7 +103,7 @@ class TilesCreator:
         print(self.pixelToLatLong(top_left_pixel[0], top_left_pixel[1]))
 
         for band in range(number_bands):
-            starting_coords = (top_left_pixel[0] + c.MAP_HEIGHT*band, top_left_pixel[1])
+            starting_coords = (top_left_pixel[0] + c.map_height*band, top_left_pixel[1])
             print('left corner ', top_left_corner)
             print('starting coords ', starting_coords)
             lat_y_rounded = self.roundDecimal(starting_coords[0], places=0)

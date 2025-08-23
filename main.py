@@ -19,20 +19,21 @@ from decimal import Decimal
 # settings.setWindowSizeZoom()
 # settings.setMapSize()
 # settings.setStorageFolders()
-# print(c.ZOOM)
+
 # newboundaries = BC()
 # newboundaries.getPoints()
-
 # newboundaries.storePoints()
+
 # # tilesCreator = TC([])
 # tilesCreator = TC(newboundaries.map_coords)
 # # tilesCreator.readMapCoords('last_test')
 # tilesCreator.convertToDecimal()
 # tilesCreator.getContainerRectangle()
 # tilesCreator.computeBandsShiftsNumber()
+
 # screenshotMaker = SM(tilesCreator.area)
 # screenshotMaker.moveAcrossBands()
 
-ss = SS('full_map')
+ss = SS('map')
 print(ss.getMapSize())
 ss.stitchScreenshots()

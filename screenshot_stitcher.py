@@ -51,7 +51,7 @@ class ScreenshotStitcher:
         pattern = re.compile(r"capture_(\d+)_(\d+)\.\w+")
         self.filenames_sorted = sorted(filenames, key=lambda f: tuple(map(int, pattern.match(f).groups())))
 
-        map_params['bands'], map_params['shifts'] = tuple(map(int, re.match(c.SCREENSHOT_TITLE_REGEX, self.filenames_sorted[-1]).groups()))
+        map_params['bands'], map_params['shifts'] = tuple(map(int, re.match(c.SCREENSHOT_POSITION_REGEX, self.filenames_sorted[-1]).groups()))
 
         for i, f in enumerate(self.filenames_sorted[:2]):
             img = Image.open(os.path.join(self.path, f))

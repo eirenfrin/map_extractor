@@ -1,4 +1,5 @@
 import consts as c
+from utils import defaultToConstant
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -8,14 +9,15 @@ class DriverManager:
     def __init__(self):
         self.driver = None
 
-    def launchChromeWithSelenium(self, x_start, y_start, zoom, no_overlays=True, show_window=True):
-        print(zoom)
+    @defaultToConstant({'zoom': 'zoom'})
+    def launchChromeWithSelenium(self, x_start=c.X_START, y_start=c.Y_START, zoom=None, no_overlays=True, show_window=True):
+        print(f'launchChromeWithSelenium zoom {zoom}')
         options = Options()
         if not show_window:
             options.add_argument("--headless=new")
         self.driver = webdriver.Chrome(options=options)
 
-        self.driver.set_window_size(c.WINDOW_WIDTH, c.WINDOW_HEIGHT)  #viewport size
+        self.driver.set_window_size(c.window_width, c.window_height)  #viewport size
         self.driver.get(c.URL.format(zoom=zoom, x=x_start, y=y_start))
 
         if(no_overlays):

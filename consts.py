@@ -1,13 +1,13 @@
 """
-Constants to be set by user
+Global variables to be set by user
 """
 
-WINDOW_WIDTH = 1200
-WINDOW_HEIGHT = 800
-MAP_WIDTH = 1187
-MAP_HEIGHT = 655
-ZOOM = 16
-MAP_TITLE = ''
+window_width = 1200
+window_height = 800
+map_width = 1187
+map_height = 655
+zoom = 16
+map_title = ''
 
 """
 Regular constants
@@ -18,14 +18,13 @@ Y_START = 48 # latitude
 TILE_SIZE = 256
 XYZ_URL_REGEX = r'\d+(?:\.\d+)?'
 
-
 URL = 'https://www.freemap.sk/#map={zoom}/{y}/{x}&layers=X'
 MAP_CONTAINER_CLASSES = 'leaflet-container, leaflet-touch, leaflet-retina, leaflet-fade-anim, leaflet-grab, leaflet-touch-drag, leaflet-touch-zoom'
 OVERLAY_ELEMENTS_CLASSES = 'header, .fm-type-zoom-control, div.fm-toolbar, div.leaflet-control-scale-line, div.fade'
 
 BOUNDARIES_OUTPUT_FOLDER = 'boundaries'
 MAPS_OUTPUT_FOLDER = 'maps'
-SCREENSHOT_TITLE_REGEX = r'\w+_(\d+)_(\d+)'
+SCREENSHOT_POSITION_REGEX = r'\w+_(\d+)_(\d+)'
 
 BOUNDARIES_SCRIPT = """
     try{

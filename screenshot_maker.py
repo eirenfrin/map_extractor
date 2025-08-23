@@ -24,10 +24,10 @@ class ScreenshotMaker:
         
     def shiftHorizontally(self, long, lat, num_shifts):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(x_start=long, y_start=lat, zoom=c.ZOOM, no_overlays=True)
+        new_driver.launchChromeWithSelenium(x_start=long, y_start=lat)
         map_element = new_driver.getMapElement()
-        center_x = c.MAP_WIDTH // 2
-        remainder = c.MAP_WIDTH % 2
+        center_x = c.map_width // 2
+        remainder = c.map_width % 2
 
         for shift in range(num_shifts+1):
             time.sleep(3)
@@ -43,7 +43,7 @@ class ScreenshotMaker:
         new_driver.closeDriver()
 
     def makeScreenshot(self, driver, crop):
-        full_path = os.path.join(c.MAPS_OUTPUT_FOLDER, c.MAP_TITLE, f'capture_{self.band_number}_{self.tile_number}.png')
+        full_path = os.path.join(c.MAPS_OUTPUT_FOLDER, c.map_title, f'capture_{self.band_number}_{self.tile_number}.png')
         capture = driver.driver.get_screenshot_as_png()
         img = Image.open(io.BytesIO(capture))
 
