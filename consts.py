@@ -23,6 +23,7 @@ MAP_CONTAINER_CLASSES = 'leaflet-container, leaflet-touch, leaflet-retina, leafl
 OVERLAY_ELEMENTS_CLASSES = 'header, .fm-type-zoom-control, div.fm-toolbar, div.leaflet-control-scale-line, div.fade'
 
 BOUNDARIES_OUTPUT_FOLDER = 'boundaries'
+TILES_OUTPUT_FOLDER = 'tiles'
 MAPS_OUTPUT_FOLDER = 'maps'
 SCREENSHOT_POSITION_REGEX = r'\w+_(\d+)_(\d+)'
 

@@ -15,24 +15,24 @@ from selenium.webdriver.common.by import By
 from decimal import Decimal
 
 
-# settings = S('map', 1200, 800, 15)
-# settings.setWindowSizeZoom()
-# settings.setMapSize()
-# settings.setStorageFolders()
+settings = S('map', 1200, 800, 15)
+settings.setWindowSizeZoom()
+settings.setMapSize()
+settings.setStorageFolders()
 
-# newboundaries = BC()
-# newboundaries.getPoints()
-# newboundaries.storePoints()
+newboundaries = BC()
+newboundaries.getPoints()
+newboundaries.storePoints()
 
-# # tilesCreator = TC([])
-# tilesCreator = TC(newboundaries.map_coords)
-# # tilesCreator.readMapCoords('last_test')
-# tilesCreator.convertToDecimal()
-# tilesCreator.getContainerRectangle()
-# tilesCreator.computeBandsShiftsNumber()
+# tilesCreator = TC([])
+tilesCreator = TC(newboundaries.map_coords)
+# tilesCreator.readMapCoords('last_test')
+tilesCreator.convertToDecimal()
+tilesCreator.getContainerRectangle()
+tilesCreator.computeBandsShiftsNumber()
 
-# screenshotMaker = SM(tilesCreator.area)
-# screenshotMaker.moveAcrossBands()
+screenshotMaker = SM(tilesCreator.area)
+screenshotMaker.moveAcrossBands()
 
 ss = SS('map')
 print(ss.getMapSize())

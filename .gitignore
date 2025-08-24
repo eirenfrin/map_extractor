@@ -1,4 +1,5 @@
 venv/
 boundaries/
 maps/
+tiles/
 __pycache__/

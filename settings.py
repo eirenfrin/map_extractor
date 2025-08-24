@@ -30,8 +30,9 @@ class Settings:
         new_driver.closeDriver()
 
     def setStorageFolders(self):
-        os.makedirs(c.MAPS_OUTPUT_FOLDER, exist_ok=True)
+        os.makedirs(c.TILES_OUTPUT_FOLDER, exist_ok=True)
         os.makedirs(c.BOUNDARIES_OUTPUT_FOLDER, exist_ok=True)
+        os.makedirs(c.MAPS_OUTPUT_FOLDER, exist_ok=True)
 
         if not self.map_title:
             current_time = datetime.now()
@@ -39,10 +40,9 @@ class Settings:
 
         c.map_title = self.map_title
 
-        tiles_storage_path = os.path.join(c.MAPS_OUTPUT_FOLDER, self.map_title)
+        tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
         os.makedirs(tiles_storage_path, exist_ok=True)
 
-        # open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, self.map_title), "w").close()
         with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json"), "w") as boundaries_storage:
             json.dump([], boundaries_storage)
 

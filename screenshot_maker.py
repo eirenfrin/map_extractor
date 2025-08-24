@@ -43,7 +43,7 @@ class ScreenshotMaker:
         new_driver.closeDriver()
 
     def makeScreenshot(self, driver, crop):
-        full_path = os.path.join(c.MAPS_OUTPUT_FOLDER, c.map_title, f'capture_{self.band_number}_{self.tile_number}.png')
+        full_path = os.path.join(c.TILES_OUTPUT_FOLDER, c.map_title, f'capture_{self.band_number}_{self.tile_number}.png')
         capture = driver.driver.get_screenshot_as_png()
         img = Image.open(io.BytesIO(capture))
 
