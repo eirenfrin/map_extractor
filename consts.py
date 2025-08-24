@@ -1,6 +1,5 @@
-"""
-Global variables to be set by user
-"""
+
+# >>>>>>>>> global variables to be set by user <<<<<<<<<
 
 window_width = 1200
 window_height = 800
@@ -9,9 +8,7 @@ map_height = 655
 zoom = 16
 map_title = ''
 
-"""
-Regular constants
-"""
+# >>>>>>>>> regular constants <<<<<<<<<
 
 X_START = 17 # longitude
 Y_START = 48 # latitude

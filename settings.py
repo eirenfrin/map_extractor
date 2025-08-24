@@ -4,32 +4,41 @@ from driver_manager import DriverManager as DM
 import os
 import json
 from datetime import datetime
-from decimal import Decimal
 
 class Settings:
+    """
+    Creates all the necessary output folders. Calibrates map web element dimentions to user-defined viewport size.
+
+     Attributes:
+        map_title (str): Holds the title of the map
+        window_height (int): Holds user-defined viewport height for capture collection
+        window_width (int): Holds user-defined viewport width for capture collection
+        zoom (int): Holds user-defined map zoom for capture collection
+    """
+
     def __init__(self, map_title='', window_width=1200, window_height=800, zoom=16):
         self.map_title = '_'.join(map_title.split(' '))
         self.window_height = window_height
         self.window_width = window_width
         self.zoom = zoom
 
-    def setWindowSizeZoom(self):
+    def set_window_size_zoom(self):
         c.window_height = self.window_height
         c.window_width = self.window_width
         c.zoom = self.zoom
 
-    def setMapSize(self):
+    def set_map_size(self):
         new_driver = DM()
-        new_driver.launchChromeWithSelenium(no_overlays=False)
-        map_element = new_driver.getMapElement()
+        new_driver.launch_chrome_with_selenium(no_overlays=False)
+        map_element = new_driver.get_map_element()
         dims = map_element.rect
         
         c.map_height = dims['height']
         c.map_width = dims['width']
 
-        new_driver.closeDriver()
+        new_driver.close_driver()
 
-    def setStorageFolders(self):
+    def set_storage_folders(self):
         os.makedirs(c.TILES_OUTPUT_FOLDER, exist_ok=True)
         os.makedirs(c.BOUNDARIES_OUTPUT_FOLDER, exist_ok=True)
         os.makedirs(c.MAPS_OUTPUT_FOLDER, exist_ok=True)

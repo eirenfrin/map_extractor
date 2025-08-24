@@ -1,7 +1,7 @@
 import consts as c
 import functools
 
-def defaultToConstant(params_dict):
+def default_to_constant(params_dict):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
