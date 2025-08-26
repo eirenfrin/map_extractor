@@ -28,22 +28,24 @@ class BoundariesCapturer:
         new_driver.inject_script(BOUNDARIES_SCRIPT)
 
         while new_driver.poll_for_variables('selectionMode'):
-            if new_driver.poll_for_variables('newPointToStore'):
-                current_url = new_driver.driver.current_url
-                zoom, (lat, long) = self.get_zoom_lat_long_from_url(current_url)
+            if not new_driver.poll_for_variables('newPointToStore'):
+                continue
+            
+            current_url = new_driver.driver.current_url
+            zoom, (lat, long) = self.get_zoom_lat_long_from_url(current_url)
 
-                if zoom != c.zoom:
-                    new_driver.inject_script(f"alert('Point was NOT stored. Adjust zoom to {c.zoom} and try again.');")
-                    try:
-                        WebDriverWait(new_driver.driver, 300).until_not(EC.alert_is_present())
-                    except TimeoutException:
-                        pass
-                    new_driver.inject_script('window.newPointToStore = false')
-                    continue
-
-                self.urls.append(current_url)
-                self.map_coords.append((lat, long))
+            if zoom != c.zoom:
+                new_driver.inject_script(f"alert('Point was NOT stored. Adjust zoom to {c.zoom} and try again.');")
+                try:
+                    WebDriverWait(new_driver.driver, 300).until_not(EC.alert_is_present())
+                except TimeoutException:
+                    pass
                 new_driver.inject_script('window.newPointToStore = false')
+                continue
+
+            self.urls.append(current_url)
+            self.map_coords.append((lat, long))
+            new_driver.inject_script('window.newPointToStore = false')
 
         new_driver.close_driver()
 
@@ -52,9 +54,13 @@ class BoundariesCapturer:
         return (int(zoom), (lat, long))
     
     def store_points(self):
-        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{c.map_title}.json"), "w") as boundaries_storage:
-            json.dump([list(coord) for coord in self.map_coords], boundaries_storage)
+        json_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{c.map_title}.json")
+        with open(json_path, "r") as boundaries_storage:
+            json_data = json.load(boundaries_storage)
+            json_data['data'] = [list(coord) for coord in self.map_coords]   
 
+        with open(json_path, "w") as boundaries_storage:
+            json.dump(json_data, boundaries_storage)
 
 
 

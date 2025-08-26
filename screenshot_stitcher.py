@@ -14,9 +14,8 @@ class ScreenshotStitcher:
         filenames_sorted (list): Holds all captures' titles sorted by their position starting from top left capture
     """
     
-    def __init__(self, map_folder):
-        self.map_folder = map_folder
-        self.input_path = os.path.join(c.TILES_OUTPUT_FOLDER, map_folder)
+    def __init__(self):
+        self.input_path = os.path.join(c.TILES_OUTPUT_FOLDER, c.map_title)
         self.filenames_sorted = None
 
     def stitch_screenshots(self):
@@ -44,7 +43,7 @@ class ScreenshotStitcher:
             else: 
                 horizontal_offshift += map_params['width_next']
         
-        full_map.save(os.path.join(c.MAPS_OUTPUT_FOLDER, f'{self.map_folder}.png'))
+        full_map.save(os.path.join(c.MAPS_OUTPUT_FOLDER, f'{c.map_title}.png'))
    
 
     def get_map_size(self):

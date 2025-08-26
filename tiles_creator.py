@@ -15,8 +15,8 @@ class TilesCreator:
         area (list): Contains lists with a two-element tuple and an integer, [(lat, long), number]
     """
 
-    def __init__(self, map_coords):
-        self.map_coords = map_coords
+    def __init__(self):
+        self.map_coords = []
         self.area = []
 
     def convert_to_decimal(self):
@@ -24,7 +24,8 @@ class TilesCreator:
 
     def read_map_coords(self, map_title=None):
         with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{map_title if map_title else c.map_title}.json"), "r") as boundaries_storage:
-            map_coords_as_lists = json.load(boundaries_storage)
+            json_all = json.load(boundaries_storage)
+            map_coords_as_lists = json_all["data"]
             self.map_coords = [tuple(coords) for coords in map_coords_as_lists]
 
     def get_min_max_longitude_coord(self):
@@ -97,8 +98,6 @@ class TilesCreator:
             long_x_rounded = self.round_decimal(starting_coords[1], places=0)
             lat_long = self.pixel_to_lat_long(lat_y_rounded, long_x_rounded)
             self.area.append([lat_long, number_shifts])
-
-
 
 
 

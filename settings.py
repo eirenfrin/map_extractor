@@ -22,6 +22,18 @@ class Settings:
         self.window_width = window_width
         self.zoom = zoom
 
+    def get_params_from_json(self):
+        json_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json")
+
+        if(os.path.isfile(json_path)):
+            with open(json_path, "r") as boundaries_storage:
+                json_all = json.load(boundaries_storage)
+                self.window_height = json_all["params"]["viewport_height"]
+                self.window_width = json_all["params"]["viewport_width"]
+                self.zoom = json_all["params"]["zoom"]
+        else:
+            raise FileNotFoundError(f"File '{self.map_title}.json' does not exist.")
+
     def set_window_size_zoom(self):
         c.window_height = self.window_height
         c.window_width = self.window_width
@@ -38,20 +50,39 @@ class Settings:
 
         new_driver.close_driver()
 
-    def set_storage_folders(self):
-        os.makedirs(c.TILES_OUTPUT_FOLDER, exist_ok=True)
-        os.makedirs(c.BOUNDARIES_OUTPUT_FOLDER, exist_ok=True)
-        os.makedirs(c.MAPS_OUTPUT_FOLDER, exist_ok=True)
-
+    def set_map_title(self):
         if not self.map_title:
             current_time = datetime.now()
             self.map_title = current_time.strftime("%d_%m_%Y__%H_%M")
 
         c.map_title = self.map_title
 
+    def set_tiles_output_folder(self):
+        os.makedirs(c.TILES_OUTPUT_FOLDER, exist_ok=True)
         tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
         os.makedirs(tiles_storage_path, exist_ok=True)
 
+    def set_boundaries_output_folder(self):
+        os.makedirs(c.BOUNDARIES_OUTPUT_FOLDER, exist_ok=True)
+
+        json_data = {
+            "params": {
+                "viewport_width": self.window_width,
+                "viewport_height": self.window_height,
+                "zoom": self.zoom
+            },
+            "data": []
+        }
+
         with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json"), "w") as boundaries_storage:
-            json.dump([], boundaries_storage)
+            json.dump(json_data, boundaries_storage)
+
+    def set_maps_output_folder(self):
+        os.makedirs(c.MAPS_OUTPUT_FOLDER, exist_ok=True)
+
+    def check_tiles_exist(self):
+        tiles_storage_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, self.map_title)
+        if not os.path.isdir(tiles_storage_path):
+            raise FileNotFoundError(f"Folder '{c.TILES_OUTPUT_FOLDER}\{self.map_title}' does not exist.")
+
 
