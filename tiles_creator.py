@@ -88,7 +88,7 @@ class TilesCreator:
         rectangle_height = self.get_pixel_distance_from_lat_long_coords(top_left_corner, self.bottom_left_corner)['height'] + c.map_height # decimal type
 
         number_bands = int(self.round_decimal(rectangle_height / c.map_height, ROUND_UP, 0))
-        number_shifts = int(self.round_decimal(rectangle_width / c.map_width, ROUND_UP, 0))
+        number_shifts = int(self.round_decimal(rectangle_width / c.map_width, ROUND_UP, 0))-1
 
         top_left_pixel = self.lat_long_to_pixel(top_left_corner[0], top_left_corner[1])
 

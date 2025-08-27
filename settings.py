@@ -33,6 +33,21 @@ class Settings:
                 self.zoom = json_all["params"]["zoom"]
         else:
             raise FileNotFoundError(f"File '{self.map_title}.json' does not exist.")
+        
+    def check_tiles_title_taken(self):
+        tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
+        if os.path.isdir(tiles_storage_path):
+            raise FileExistsError(f"Folder '{c.TILES_OUTPUT_FOLDER}\\{self.map_title}' already exists.")
+        
+    def check_title_json_taken(self):
+        json_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json")
+        if(os.path.isfile(json_path)):
+            raise FileExistsError(f"File '{self.map_title}.json' already exists.")
+
+    def check_title_png_taken(self):
+        png_map_path = os.path.join(c.MAPS_OUTPUT_FOLDER, f"{self.map_title}.png")
+        if(os.path.isfile(png_map_path)):
+            raise FileExistsError(f"File '{self.map_title}.png' already exists.")
 
     def set_window_size_zoom(self):
         c.window_height = self.window_height
@@ -59,8 +74,12 @@ class Settings:
 
     def set_tiles_output_folder(self):
         os.makedirs(c.TILES_OUTPUT_FOLDER, exist_ok=True)
+
         tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
-        os.makedirs(tiles_storage_path, exist_ok=True)
+        if os.path.isdir(tiles_storage_path):
+            raise FileExistsError(f"Folder '{c.TILES_OUTPUT_FOLDER}\\{self.map_title}' already exists.")
+        else:
+            os.makedirs(tiles_storage_path, exist_ok=True)
 
     def set_boundaries_output_folder(self):
         os.makedirs(c.BOUNDARIES_OUTPUT_FOLDER, exist_ok=True)
@@ -81,8 +100,8 @@ class Settings:
         os.makedirs(c.MAPS_OUTPUT_FOLDER, exist_ok=True)
 
     def check_tiles_exist(self):
-        tiles_storage_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, self.map_title)
+        tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
         if not os.path.isdir(tiles_storage_path):
-            raise FileNotFoundError(f"Folder '{c.TILES_OUTPUT_FOLDER}\{self.map_title}' does not exist.")
+            raise FileNotFoundError(f"Folder '{c.TILES_OUTPUT_FOLDER}\\{self.map_title}' does not exist.")
 
 
