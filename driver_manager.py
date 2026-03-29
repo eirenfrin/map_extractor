@@ -4,6 +4,8 @@ from utils import default_to_constant
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.service import Service
 
 class DriverManager:
     """
@@ -19,9 +21,10 @@ class DriverManager:
     @default_to_constant({'zoom': 'zoom'})
     def launch_chrome_with_selenium(self, x_start=c.X_START, y_start=c.Y_START, zoom=None, no_overlays=True, show_window=True):
         options = Options()
-        if not show_window:
-            options.add_argument("--headless=new")
         self.driver = webdriver.Chrome(options=options)
+
+        if not show_window:
+            self.driver.minimize_window()
 
         self.driver.set_window_size(c.window_width, c.window_height)
         self.driver.get(c.URL.format(zoom=zoom, x=x_start, y=y_start))
@@ -44,9 +47,14 @@ class DriverManager:
         return data if more_vars else data[0]
     
     def hide_elements(self, classes_string):
-        self.driver.execute_script(f"""
-            document.querySelectorAll('{classes_string}').forEach(e => e.style.display = 'none');
-        """)
+        WebDriverWait(self.driver, 30, poll_frequency=0.3).until(
+            lambda d: d.execute_script(f"""
+                document.querySelectorAll('{classes_string}').forEach(e => e.style.display = 'none');
+
+                return Array.from(document.querySelectorAll('{classes_string}'))
+                    .every(e => window.getComputedStyle(e).display === 'none');
+            """)
+        )
 
     def get_driver(self):
         return self.driver

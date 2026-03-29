@@ -15,6 +15,9 @@ def main():
 
     subparsers = parser.add_subparsers(dest='mode', required=True)
 
+    delete_map_files = subparsers.add_parser("delete-map-files", help="Delete all folders and files for a specific map by its name")
+    delete_map_files.add_argument("--name", type=str, required=True, help="Map title")
+
     get_coords = subparsers.add_parser("save-coordinates", help="Collect and save map coordinates")
     get_coords.add_argument("--name", type=str, help="Map title")
     get_coords.add_argument("--w", type=int, required=True, help="Width of browser window")
@@ -35,13 +38,18 @@ def main():
 
     args = parser.parse_args()
 
-    if args.mode == "save-coordinates":
+    if args.mode == "delete-map-files":
+        settings = S(args.name)
+        settings.set_map_title()
+        settings.delete_map_files()
+
+    elif args.mode == "save-coordinates":
         # >>>>>>>>> creates folders for outputs and sets global variables <<<<<<<<<
         settings = S(args.name if args.name else '', args.w, args.h, args.z)
+        settings.set_map_title()
         settings.check_title_json_taken()
         settings.set_window_size_zoom()
         settings.set_map_size()
-        settings.set_map_title()
         settings.set_boundaries_output_folder()
 
         # >>>>>>>>> collects and stores coordinates to be included in the map <<<<<<<<<
@@ -53,10 +61,10 @@ def main():
     elif args.mode == "take-screenshots":
         # >>>>>>>>> creates folders for outputs and sets global variables <<<<<<<<<
         settings = S(args.name)
+        settings.set_map_title()
         settings.get_params_from_json()
         settings.set_window_size_zoom()
         settings.set_map_size()
-        settings.set_map_title()
         settings.set_tiles_output_folder()
 
         # >>>>>>>>> computes boundaries of the map and divides it into tiles <<<<<<<<<
@@ -75,9 +83,9 @@ def main():
     elif args.mode == "stitch-map":
         # >>>>>>>>> creates folders for outputs and sets global variables <<<<<<<<<
         settings = S(args.name)
+        settings.set_map_title()
         settings.check_tiles_exist()
         settings.check_title_png_taken()
-        settings.set_map_title()
         settings.set_maps_output_folder()
 
         # >>>>>>>>> stitches individual screenshots into a full map <<<<<<<<<
@@ -88,12 +96,12 @@ def main():
     elif args.mode == "run-all":
         # >>>>>>>>> creates folders for outputs and sets global variables <<<<<<<<<
         settings = S(args.name if args.name else '', args.w, args.h, args.z)
+        settings.set_map_title()
         settings.check_title_json_taken()
         settings.check_tiles_title_taken()
         settings.check_title_png_taken()
         settings.set_window_size_zoom()
         settings.set_map_size()
-        settings.set_map_title()
         settings.set_boundaries_output_folder()
         settings.set_tiles_output_folder()
         settings.set_maps_output_folder()

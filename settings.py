@@ -21,12 +21,14 @@ class Settings:
         self.window_height = window_height
         self.window_width = window_width
         self.zoom = zoom
+        self.json_path = '' 
+        self.tiles_storage_path = ''
+        self.png_map_path = ''
 
     def get_params_from_json(self):
-        json_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json")
 
-        if(os.path.isfile(json_path)):
-            with open(json_path, "r") as boundaries_storage:
+        if(os.path.isfile(self.json_path)):
+            with open(self.json_path, "r") as boundaries_storage:
                 json_all = json.load(boundaries_storage)
                 self.window_height = json_all["params"]["viewport_height"]
                 self.window_width = json_all["params"]["viewport_width"]
@@ -35,19 +37,35 @@ class Settings:
             raise FileNotFoundError(f"File '{self.map_title}.json' does not exist.")
         
     def check_tiles_title_taken(self):
-        tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
-        if os.path.isdir(tiles_storage_path):
+        if os.path.isdir(self.tiles_storage_path):
             raise FileExistsError(f"Folder '{c.TILES_OUTPUT_FOLDER}\\{self.map_title}' already exists.")
         
     def check_title_json_taken(self):
-        json_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json")
-        if(os.path.isfile(json_path)):
+        if(os.path.isfile(self.json_path)):
             raise FileExistsError(f"File '{self.map_title}.json' already exists.")
 
     def check_title_png_taken(self):
-        png_map_path = os.path.join(c.MAPS_OUTPUT_FOLDER, f"{self.map_title}.png")
-        if(os.path.isfile(png_map_path)):
+        if(os.path.isfile(self.png_map_path)):
             raise FileExistsError(f"File '{self.map_title}.png' already exists.")
+        
+    def delete_map_files(self):
+        try:
+            self.check_title_json_taken()
+        except FileExistsError:
+            os.remove(self.json_path)
+
+        try:
+            self.check_tiles_title_taken()
+        except FileExistsError:
+            for tile_image_name in os.listdir(self.tiles_storage_path):
+                tile_path = os.path.join(self.tiles_storage_path, tile_image_name)
+                os.remove(tile_path)
+            os.rmdir(self.tiles_storage_path)
+
+        try:
+            self.check_title_png_taken()
+        except FileExistsError:
+            os.remove(self.png_map_path)
 
     def set_window_size_zoom(self):
         c.window_height = self.window_height
@@ -71,15 +89,18 @@ class Settings:
             self.map_title = current_time.strftime("%d_%m_%Y__%H_%M")
 
         c.map_title = self.map_title
+        self.json_path = os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json")
+        self.tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
+        self.png_map_path = os.path.join(c.MAPS_OUTPUT_FOLDER, f"{self.map_title}.png")
+
 
     def set_tiles_output_folder(self):
         os.makedirs(c.TILES_OUTPUT_FOLDER, exist_ok=True)
 
-        tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
-        if os.path.isdir(tiles_storage_path):
+        if os.path.isdir(self.tiles_storage_path):
             raise FileExistsError(f"Folder '{c.TILES_OUTPUT_FOLDER}\\{self.map_title}' already exists.")
         else:
-            os.makedirs(tiles_storage_path, exist_ok=True)
+            os.makedirs(self.tiles_storage_path, exist_ok=True)
 
     def set_boundaries_output_folder(self):
         os.makedirs(c.BOUNDARIES_OUTPUT_FOLDER, exist_ok=True)
@@ -93,15 +114,14 @@ class Settings:
             "data": []
         }
 
-        with open(os.path.join(c.BOUNDARIES_OUTPUT_FOLDER, f"{self.map_title}.json"), "w") as boundaries_storage:
+        with open(self.json_path, "w") as boundaries_storage:
             json.dump(json_data, boundaries_storage)
 
     def set_maps_output_folder(self):
         os.makedirs(c.MAPS_OUTPUT_FOLDER, exist_ok=True)
 
     def check_tiles_exist(self):
-        tiles_storage_path = os.path.join(c.TILES_OUTPUT_FOLDER, self.map_title)
-        if not os.path.isdir(tiles_storage_path):
+        if not os.path.isdir(self.tiles_storage_path):
             raise FileNotFoundError(f"Folder '{c.TILES_OUTPUT_FOLDER}\\{self.map_title}' does not exist.")
 
 

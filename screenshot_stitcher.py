@@ -42,8 +42,8 @@ class ScreenshotStitcher:
 
             else: 
                 horizontal_offshift += map_params['width_next']
-        
-        full_map.save(os.path.join(c.MAPS_OUTPUT_FOLDER, f'{c.map_title}.png'))
+        full_map = full_map.convert("P", palette=Image.ADAPTIVE)
+        full_map.save(os.path.join(c.MAPS_OUTPUT_FOLDER, f'{c.map_title}.png'), optimize=True)
    
 
     def get_map_size(self):
